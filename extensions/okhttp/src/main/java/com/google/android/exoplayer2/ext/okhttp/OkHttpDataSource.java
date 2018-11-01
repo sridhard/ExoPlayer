@@ -156,12 +156,16 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
     Request request = makeRequest(dataSpec);
     Response response;
     ResponseBody responseBody;
+
+    transferStarted(dataSpec);
+
     try {
       this.response = callFactory.newCall(request).execute();
       response = this.response;
       responseBody = Assertions.checkNotNull(response.body());
       responseByteStream = responseBody.byteStream();
     } catch (IOException e) {
+      transferEnded();
       throw new HttpDataSourceException(
           "Unable to connect to " + dataSpec.uri, e, dataSpec, HttpDataSourceException.TYPE_OPEN);
     }
@@ -170,6 +174,8 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
 
     // Check for a valid response code.
     if (!response.isSuccessful()) {
+      transferEnded();
+
       Map<String, List<String>> headers = response.headers().toMultimap();
       closeConnectionQuietly();
       InvalidResponseCodeException exception = new InvalidResponseCodeException(
@@ -184,6 +190,8 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
     MediaType mediaType = responseBody.contentType();
     String contentType = mediaType != null ? mediaType.toString() : "";
     if (contentTypePredicate != null && !contentTypePredicate.evaluate(contentType)) {
+      transferEnded();
+
       closeConnectionQuietly();
       throw new InvalidContentTypeException(contentType, dataSpec);
     }
@@ -202,7 +210,6 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
     }
 
     opened = true;
-    transferStarted(dataSpec);
 
     return bytesToRead;
   }

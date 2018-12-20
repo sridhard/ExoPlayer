@@ -67,6 +67,7 @@ import com.google.android.exoplayer2.util.ErrorMessageProvider;
 import com.google.android.exoplayer2.util.RepeatModeUtil;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -240,15 +241,12 @@ import java.util.List;
  */
 public class PlayerView extends FrameLayout {
 
-  private static final int SURFACE_TYPE_NONE = 0;
-  private static final int SURFACE_TYPE_SURFACE_VIEW = 1;
-  private static final int SURFACE_TYPE_TEXTURE_VIEW = 2;
-  private static final int SURFACE_TYPE_MONO360_VIEW = 3;
-
+  // LINT.IfChange
   /**
    * Determines when the buffering view is shown. One of {@link #SHOW_BUFFERING_NEVER}, {@link
    * #SHOW_BUFFERING_WHEN_PLAYING} or {@link #SHOW_BUFFERING_ALWAYS}.
    */
+  @Documented
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({SHOW_BUFFERING_NEVER, SHOW_BUFFERING_WHEN_PLAYING, SHOW_BUFFERING_ALWAYS})
   public @interface ShowBuffering {}
@@ -264,6 +262,14 @@ public class PlayerView extends FrameLayout {
    * buffering} state.
    */
   public static final int SHOW_BUFFERING_ALWAYS = 2;
+  // LINT.ThenChange(../../../../../../res/values/attrs.xml)
+
+  // LINT.IfChange
+  private static final int SURFACE_TYPE_NONE = 0;
+  private static final int SURFACE_TYPE_SURFACE_VIEW = 1;
+  private static final int SURFACE_TYPE_TEXTURE_VIEW = 2;
+  private static final int SURFACE_TYPE_MONO360_VIEW = 3;
+  // LINT.ThenChange(../../../../../../res/values/attrs.xml)
 
   private final AspectRatioFrameLayout contentFrame;
   private final View shutterView;

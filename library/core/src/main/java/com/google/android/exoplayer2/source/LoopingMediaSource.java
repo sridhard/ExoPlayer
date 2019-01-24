@@ -65,6 +65,12 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
   }
 
   @Override
+  @Nullable
+  public Object getTag() {
+    return childSource.getTag();
+  }
+
+  @Override
   public void prepareSourceInternal(
       ExoPlayer player,
       boolean isTopLevelSource,
@@ -74,14 +80,15 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
   }
 
   @Override
-  public MediaPeriod createPeriod(MediaPeriodId id, Allocator allocator) {
+  public MediaPeriod createPeriod(MediaPeriodId id, Allocator allocator, long startPositionUs) {
     if (loopCount == Integer.MAX_VALUE) {
-      return childSource.createPeriod(id, allocator);
+      return childSource.createPeriod(id, allocator, startPositionUs);
     }
     Object childPeriodUid = LoopingTimeline.getChildPeriodUidFromConcatenatedUid(id.periodUid);
     MediaPeriodId childMediaPeriodId = id.copyWithPeriodUid(childPeriodUid);
     childMediaPeriodIdToMediaPeriodId.put(childMediaPeriodId, id);
-    MediaPeriod mediaPeriod = childSource.createPeriod(childMediaPeriodId, allocator);
+    MediaPeriod mediaPeriod =
+        childSource.createPeriod(childMediaPeriodId, allocator, startPositionUs);
     mediaPeriodToChildMediaPeriodId.put(mediaPeriod, childMediaPeriodId);
     return mediaPeriod;
   }

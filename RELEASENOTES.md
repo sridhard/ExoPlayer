@@ -1,5 +1,53 @@
 # Release notes #
 
+### 2.9.4 ###
+
+* IMA extension: Clear ads loader listeners on release
+  ([#4114](https://github.com/google/ExoPlayer/issues/4114)).
+* SmoothStreaming: Fix support for subtitles in DRM protected streams
+  ([#5378](https://github.com/google/ExoPlayer/issues/5378)).
+* FFmpeg extension: Treat invalid data errors as non-fatal to match the behavior
+  of MediaCodec ([#5293](https://github.com/google/ExoPlayer/issues/5293)).
+* GVR extension: upgrade GVR SDK dependency to 1.190.0.
+* Associate fatal player errors of type SOURCE with the loading source in
+  `AnalyticsListener.EventTime`
+  ([#5407](https://github.com/google/ExoPlayer/issues/5407)).
+* Add `startPositionUs` to `MediaSource.createPeriod`. This fixes an issue where
+  using lazy preparation in `ConcatenatingMediaSource` with an
+  `ExtractorMediaSource` overrides initial seek positions
+  ([#5350](https://github.com/google/ExoPlayer/issues/5350)).
+* Add subtext to the `MediaDescriptionAdapter` of the
+  `PlayerNotificationManager`.
+* Add workaround for video quality problems with Amlogic decoders
+  ([#5003](https://github.com/google/ExoPlayer/issues/5003)).
+* Fix issue where sending callbacks for playlist changes may cause problems
+  because of parallel player access
+  ([#5240](https://github.com/google/ExoPlayer/issues/5240)).
+* Fix issue with reusing a `ClippingMediaSource` with an inner
+  `ExtractorMediaSource` and a non-zero start position
+  ([#5351](https://github.com/google/ExoPlayer/issues/5351)).
+* Fix issue where uneven track durations in MP4 streams can cause OOM problems
+  ([#3670](https://github.com/google/ExoPlayer/issues/3670)).
+
+### 2.9.3 ###
+
+* Captions: Support PNG subtitles in SMPTE-TT
+  ([#1583](https://github.com/google/ExoPlayer/issues/1583)).
+* MPEG-TS: Use random access indicators to minimize the need for
+  `FLAG_ALLOW_NON_IDR_KEYFRAMES`.
+* Downloading: Reduce time taken to remove downloads
+  ([#5136](https://github.com/google/ExoPlayer/issues/5136)).
+* MP3:
+  * Use the true bitrate for constant-bitrate MP3 seeking.
+  * Fix issue where streams would play twice on some Samsung devices
+    ([#4519](https://github.com/google/ExoPlayer/issues/4519)).
+* Fix regression where some audio formats were incorrectly marked as being
+  unplayable due to under-reporting of platform decoder capabilities
+  ([#5145](https://github.com/google/ExoPlayer/issues/5145)).
+* Fix decode-only frame skipping on Nvidia Shield TV devices.
+* Workaround for MiTV (dangal) issue when swapping output surface
+  ([#5169](https://github.com/google/ExoPlayer/issues/5169)).
+
 ### 2.9.2 ###
 
 * HLS:
@@ -47,10 +95,10 @@
 * DASH: Parse ProgramInformation element if present in the manifest.
 * HLS:
   * Add constructor to `DefaultHlsExtractorFactory` for adding TS payload
-    reader factory flags.
+    reader factory flags
+    ([#4861](https://github.com/google/ExoPlayer/issues/4861)).
   * Fix bug in segment sniffing
     ([#5039](https://github.com/google/ExoPlayer/issues/5039)).
-  ([#4861](https://github.com/google/ExoPlayer/issues/4861)).
 * SubRip: Add support for alignment tags, and remove tags from the displayed
   captions ([#4306](https://github.com/google/ExoPlayer/issues/4306)).
 * Fix issue with blind seeking to windows with non-zero offset in a

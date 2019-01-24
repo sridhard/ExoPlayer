@@ -359,12 +359,18 @@ public final class ExtractorMediaSource extends BaseMediaSource
   }
 
   @Override
+  @Nullable
+  public Object getTag() {
+    return tag;
+  }
+
+  @Override
   public void prepareSourceInternal(
       ExoPlayer player,
       boolean isTopLevelSource,
       @Nullable TransferListener mediaTransferListener) {
     transferListener = mediaTransferListener;
-    notifySourceInfoRefreshed(timelineDurationUs, /* isSeekable= */ false);
+    notifySourceInfoRefreshed(timelineDurationUs, timelineIsSeekable);
   }
 
   @Override
@@ -373,7 +379,7 @@ public final class ExtractorMediaSource extends BaseMediaSource
   }
 
   @Override
-  public MediaPeriod createPeriod(MediaPeriodId id, Allocator allocator) {
+  public MediaPeriod createPeriod(MediaPeriodId id, Allocator allocator, long startPositionUs) {
     DataSource dataSource = dataSourceFactory.createDataSource();
     if (transferListener != null) {
       dataSource.addTransferListener(transferListener);
